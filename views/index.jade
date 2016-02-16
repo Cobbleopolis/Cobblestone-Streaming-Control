@@ -1,5 +1,11 @@
 extends layout
 
+block head
+    link(rel='stylesheet', href='/public/stylesheets/index.css')
+
 block content
-  h1= title
-  p Welcome to #{title}
+    h1= title
+    p Welcome to #{title}
+    button.good(type="button") Start Server
+    button.bad(type="button") Stop Server
+    button(type="button") Restart Server

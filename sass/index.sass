@@ -1,5 +1,21 @@
-/* Welcome to Compass. Use this file to write IE specific override styles.
- * Import this file using the following HTML or equivalent:
- * <!--[if IE]>
- *   <link href="/stylesheets/ie.css" media="screen, projection" rel="stylesheet" type="text/css" />
- * <![endif]-->
+@import "style"
+
+button
+    border: 0
+    background: $blue
+    margin:
+        right: 20px
+    padding: 20px
+    font-size: 20px
+    &:active
+        background: darken($blue, 10)
+
+button.good
+    background: $green
+    &:active
+        background: darken($green, 10)
+
+button.bad
+    background: $red
+    &:active
+        background: darken($red, 10)

@@ -93,7 +93,7 @@ function onListening() {
         ? 'pipe ' + addr
         : 'port ' + addr.port;
     debug('Listening on ' + bind);
-    mediaServer.startMediaServer();
+    mediaServer.startServer();
 }
 
 /**

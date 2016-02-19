@@ -1,19 +1,35 @@
 {
   "port": 3001,
-  "foreverConfig": {
-    "root": "./forever/"
+  "forever": {
+    "uid": "mediaServer",
+    "start": {
+      "command": "forever start -w",
+      "options": {
+        "cwd": "../Cobblestone-Streaming"
+      }
+    },
+    "stop": {
+      "command": "forever stop",
+      "options": {
+        "cwd": "../Cobblestone-Streaming"
+      }
+    },
+    "restart": {
+      "command": "forever restart -w",
+      "options": {
+        "cwd": "../Cobblestone-Streaming"
+      }
+    }
   },
   "server": {
     "script": "../Cobblestone-Streaming/bin/www",
-    "config": {
-      "killTree": true,
-      "watchDirectory": "../Cobblestone-Streaming/",
-      "cwd": "../Cobblestone-Streaming",
-      "silent": false,
-      "logFile": "log/serverLog.log",
-      "outFile": "log/serverOut.log",
-      "errFile": "log/serverErr.log",
-      "args": []
-    }
+    "cwd": "../Cobblestone-Streaming",
+    "silent": false,
+    "log_file": "log/serverLog.log",
+    "out_file": "log/serverOut.log",
+    "error_file": "log/serverErr.log",
+    "exec_mode" : "cluster",        // Allow your app to be clustered
+    "instances" : 4,                // Optional: Scale your app by 4
+    "max_memory_restart" : "100M"   // Optional: Restart your app if it reaches 100Mo
   }
 }

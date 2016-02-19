@@ -1,27 +1,56 @@
-var forever = require('forever-monitor');
+var exec = require('child_process').exec;
 var config = require('config');
 
-var serverFile = config.get('server.script');
+var startCmd = config.get('forever.start');
+var stopCmd = config.get('forever.stop');
+var restartCmd = config.get('forever.restart');
 
-var serverConfig = config.get('server.config');
+var server = config.get('server');
 
-var server = new (forever.Monitor)(serverFile, serverConfig);
-server.on('start', function(process, data) {
-    console.log("Server Start");
-});
+var uid = config.get("forever.uid");
 
-server.on('stop', function(process) {
-    console.log("Server Stop");
-});
+var isServerRunning = false;
 
-exports.startMediaServer = function() {
-    server.start();
+exports.startServer = function() {
+    if (!isServerRunning)
+        foreverCommand(startCmd.command + " -a --uid " + uid + " " + server.script, startCmd.options, function() {
+            isServerRunning = true
+        }, function () {
+            isServerRunning = false
+        })
 };
 
 exports.stopServer = function() {
-    server.stop();
+    if (isServerRunning)
+        foreverCommand(stopCmd.command + " " + uid, stopCmd.options, function() {
+            isServerRunning = false
+        }, function () {
+            isServerRunning = true
+        });
 };
 
 exports.restartServer = function() {
-    server.restart();
+    if (isServerRunning)
+        foreverCommand(restartCmd.command + " " + uid, restartCmd.options, function() {
+            isServerRunning = true
+        })
+};
+
+function foreverCommand(command, commandOptions, successCallback, errorCallback) {
+    console.log("Running Command: " + command);
+    exec(command, commandOptions, function(error, stdout, stderr) {
+        if (error) {
+            console.log(stderr);
+            if (errorCallback)
+                errorCallback(error, stderr);
+            throw error;
+        }
+        if (successCallback)
+            successCallback(stdout);
+        console.log(stdout);
+    });
+}
+
+exports.isServerRunning = function() {
+    return isServerRunning;
 };

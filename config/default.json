@@ -2,6 +2,7 @@
   "port": 3001,
   "forever": {
     "uid": "mediaServer",
+    "foreverDataPath": "forever",
     "start": {
       "command": "forever start -w",
       "options": {
@@ -22,14 +23,6 @@
     }
   },
   "server": {
-    "script": "../Cobblestone-Streaming/bin/www",
-    "cwd": "../Cobblestone-Streaming",
-    "silent": false,
-    "log_file": "log/serverLog.log",
-    "out_file": "log/serverOut.log",
-    "error_file": "log/serverErr.log",
-    "exec_mode" : "cluster",        // Allow your app to be clustered
-    "instances" : 4,                // Optional: Scale your app by 4
-    "max_memory_restart" : "100M"   // Optional: Restart your app if it reaches 100Mo
+    "script": "../Cobblestone-Streaming/bin/www"
   }
 }

@@ -1,39 +1,33 @@
 var exec = require('child_process').exec;
 var config = require('config');
+var fileExists = require('file-exists');
+var path = require('path');
 
-var startCmd = config.get('forever.start');
-var stopCmd = config.get('forever.stop');
-var restartCmd = config.get('forever.restart');
+var forever = config.get('forever');
+
+var startCmd = forever.start;
+var stopCmd = forever.stop;
+var restartCmd = forever.restart;
+
+var fullDataPath = __dirname + path.sep + ".." + path.sep + forever.foreverDataPath;
 
 var server = config.get('server');
 
-var uid = config.get("forever.uid");
-
-var isServerRunning = false;
+var uid = forever.uid;
 
 exports.startServer = function() {
-    if (!isServerRunning)
-        foreverCommand(startCmd.command + " -a --uid " + uid + " " + server.script, startCmd.options, function() {
-            isServerRunning = true
-        }, function () {
-            isServerRunning = false
-        })
+    if (!exports.isServerRunning())
+        foreverCommand(startCmd.command + " -a -p " + fullDataPath + " --pidFile " + fullDataPath + path.sep + uid + ".pid --uid " + uid + " " + server.script, startCmd.options)
 };
 
 exports.stopServer = function() {
-    if (isServerRunning)
-        foreverCommand(stopCmd.command + " " + uid, stopCmd.options, function() {
-            isServerRunning = false
-        }, function () {
-            isServerRunning = true
-        });
+    if (exports.isServerRunning())
+        foreverCommand(stopCmd.command + " " + uid, stopCmd.options);
 };
 
 exports.restartServer = function() {
-    if (isServerRunning)
-        foreverCommand(restartCmd.command + " " + uid, restartCmd.options, function() {
-            isServerRunning = true
-        })
+    if (exports.isServerRunning())
+        foreverCommand(restartCmd.command + " " + uid, restartCmd.options)
 };
 
 function foreverCommand(command, commandOptions, successCallback, errorCallback) {
@@ -52,5 +46,5 @@ function foreverCommand(command, commandOptions, successCallback, errorCallback)
 }
 
 exports.isServerRunning = function() {
-    return isServerRunning;
+    return fileExists(uid + ".pid", {"root": fullDataPath})
 };

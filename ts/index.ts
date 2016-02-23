@@ -1,29 +1,67 @@
 function startServer() {
     $.ajax({
-        url: "/rest/startServer",
-        type: "GET",
-        dataType: "json",
+        url: '/rest/startServer',
+        type: 'GET',
         timeout: 3000, //Set your timeout value in milliseconds or 0 for unlimited
-        complete : function(response) { alert(JSON.stringify(response)); }
+        success: function(data){
+            notify(data)
+        },
+        error: function(jqXHR, textStatus, errorThrown){
+            alert(JSON.stringify(jqXHR) + '\n' + textStatus + '\n' + errorThrown)
+        }
     });
 }
 
 function stopServer() {
     $.ajax({
-        url: "/rest/stopServer",
-        type: "GET",
-        dataType: "json",
+        url: '/rest/stopServer',
+        type: 'GET',
         timeout: 3000, //Set your timeout value in milliseconds or 0 for unlimited
-        complete : function(response) { alert(JSON.stringify(response)); }
+        success: function(data){
+            notify(data)
+        },
+        error: function(jqXHR, textStatus, errorThrown){
+            alert(JSON.stringify(jqXHR) + '\n' + textStatus + '\n' + errorThrown)
+        }
     });
 }
 
 function restartServer() {
     $.ajax({
-        url: "/rest/restartServer",
-        type: "GET",
-        dataType: "json",
+        url: '/rest/restartServer',
+        type: 'GET',
         timeout: 3000, //Set your timeout value in milliseconds or 0 for unlimited
-        complete : function(response) { alert(JSON.stringify(response)); }
+        success: function(data){
+            notify(data)
+        },
+        error: function(jqXHR, textStatus, errorThrown){
+            alert(JSON.stringify(jqXHR) + '\n' + textStatus + '\n' + errorThrown)
+        }
     });
 }
+
+function updateServerRunning() {
+    $.ajax({
+        url: '/rest/isServerRunning',
+        type: 'GET',
+        timeout: 3000,
+        success: function(data){
+            if (data) {
+                $('#runningStatus').text('Running').addClass('good').removeClass('bad')
+            } else {
+                $('#runningStatus').text('Not Running').addClass('bad').removeClass('good')
+            }
+        },
+        error: function(jqXHR, textStatus, errorThrown){
+            alert(JSON.stringify(jqXHR) + '\n' + textStatus + '\n' + errorThrown)
+        }
+    })
+}
+
+function notify(message: String) {
+    $("#notification").append(
+        $('<p>' + message + '</p>').fadeIn().delay(3000).fadeOut()
+    );
+}
+
+setInterval(updateServerRunning, 3000);

@@ -7,6 +7,9 @@ block head
 block content
     h1= title
     p Welcome to #{title}
+    p Server Status:&nbsp;
+        span#runningStatus ...
     button.good(type='button' onclick='startServer()') Start Server
     button.bad(type='button' onclick='stopServer()') Stop Server
     button(type='button' onclick='restartServer()') Restart Server
+    div#notification

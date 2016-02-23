@@ -186,4 +186,10 @@ button.bad {
   button.bad:active {
     background: #b21e1e; }
 
+#runningStatus.good {
+  color: #21BA45; }
+
+#runningStatus.bad {
+  color: #DB2828; }
+
 /*# sourceMappingURL=index.css.map */

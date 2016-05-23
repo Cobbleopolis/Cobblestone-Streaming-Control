@@ -20,7 +20,8 @@ function stopServer() {
             notify(data);
         },
         error: function (jqXHR, textStatus, errorThrown) {
-            alert(JSON.stringify(jqXHR) + '\n' + textStatus + '\n' + errorThrown);
+            onError();
+            // alert(JSON.stringify(jqXHR) + '\n' + textStatus + '\n' + errorThrown)
         }
     });
 }
@@ -33,7 +34,8 @@ function restartServer() {
             notify(data);
         },
         error: function (jqXHR, textStatus, errorThrown) {
-            alert(JSON.stringify(jqXHR) + '\n' + textStatus + '\n' + errorThrown);
+            onError();
+            // alert(JSON.stringify(jqXHR) + '\n' + textStatus + '\n' + errorThrown)
         }
     });
 }
@@ -51,12 +53,16 @@ function updateServerRunning() {
             }
         },
         error: function (jqXHR, textStatus, errorThrown) {
-            alert(JSON.stringify(jqXHR) + '\n' + textStatus + '\n' + errorThrown);
+            onError();
+            // alert(JSON.stringify(jqXHR) + '\n' + textStatus + '\n' + errorThrown)
         }
     });
 }
 function notify(message) {
     $("#notification").append($('<p>' + message + '</p>').fadeIn().delay(3000).fadeOut());
+}
+function onError() {
+    $('#runningStatus').text('...').removeClass('good').removeClass('bad');
 }
 setInterval(updateServerRunning, 3000);
 //# sourceMappingURL=index.js.map
